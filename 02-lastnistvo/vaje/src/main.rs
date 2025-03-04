@@ -120,6 +120,7 @@ fn fn3() {
 fn fn4() {
     let x = 5;
     // Izpišite naslov spremenljivke x
+    println!("x addr {:p}", &x);
 }
 
 /// ------------------------------------------------------------------------------------------------
@@ -169,36 +170,36 @@ fn fn8() {
 
     // let p = &mut s;
 
-    // p.push_str("world");
+    // p.push_str("world"); (tuki je p unicen -deallocates memory)
 
-    // println!("Success! {}", p);
+    // println!("Success! {}", p); (povzroca undefined behaviour)
     // println!("Success! {}", s);
     // p.push_str("!");
 }
 
 /// ------------------------------------------------------------------------------------------------
-/// Pojasnite, zakaj spodnja koda ne deluje in jo popravite
+/// Pojasnite, zakaj spodnja koda ne deluje in jo popravite (samo enkrat se lahko sklicujemo na s)
 /// Pojasnite tudi zakaj je popravek ok
 
 fn fn9() {
-    // let mut s = String::from("hello");
+    let mut s = String::from("hello");
 
-    // let r1 = &mut s;
-    // let r2 = &mut s;
+    let r1 = &mut s;
+    let r2 = &r1;
 
-    // println!("{}, {}", r1, r2);
+    println!("{}, {}", r1, r2);
 
-    // println!("Success!");
+    println!("Success!");
 }
 
 /// ------------------------------------------------------------------------------------------------
 fn fn10() {
     // // Popravite spodnjo vrstico
-    // let s = String::from("hello, ");
+    let mut s = String::from("hello, ");
 
-    // helper3(&mut s);
+    helper3(&mut s);
 
-    // println!("Success!");
+    println!("Success!");
 }
 
 fn helper3(s: &mut String) {}
@@ -216,7 +217,8 @@ fn main() {
     fn1();
     fn2();
     fn3();
+    fn4();
     fn5();
-
-
+    fn9();
+    fn10();
 }
