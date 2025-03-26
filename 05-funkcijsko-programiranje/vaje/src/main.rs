@@ -7,11 +7,56 @@
 //  ponavljaj: int -> ('a -> 'a) -> 'a -> 'a // Ponovi funkcijo n-krat
 //  filter: ('a -> bool) -> 'a list -> 'a list // Vrne seznam elementov, ki zadoščajo pogoju - uporabite Vec<T> namesto list in že vgrajeno funkcijo filter
 
+fn apply_int<F>(f : F, n : i32) -> i32 where
+    F: Fn(i32) -> i32 {
+        f(n)
+    }
+
+fn apply<F, T, U>(f : F, a : T) -> U where
+    F: Fn(T) -> U {
+        f(a)
+    }
+
+fn apply2<F, T, U>(f : F, a1 : T, a2 : T) -> U where
+    F: Fn(T, T) -> U {
+        f(a1, a2)
+    }
+
+fn map<F, T, U>(f : F, ls : Vec<T>) -> Vec<U> where
+    F: Fn(T) -> U {
+        let mut list = Vec::new();
+
+        for el in ls {
+            list.push(f(el));
+        }
+
+        list
+    }
+
+fn ponavljaj<F, T>(n : i32, f : F, a : T) -> T where 
+    F: Fn(T) -> T {
+        let mut b = a;
+        
+        for i in 1..=n {
+            f(b);
+            b = f(b);
+        }
+        
+        b
+    }
+
+fn filter<F,T>(f : F, ls : Vec<T>) -> Vec<T> where 
+    F: FnMut(T) -> bool {
+        ls.iter()
+        .filter(f)
+        .collect()
+    }
+
 // Vzemite zaporedja iz prejšnjih vaj in naredite nov objekt, ki sprejme zaporedje in ga naredi iterabilnega
 
 // Iteratorji
 
-// Napišite funkcijo, ki sprejme vektor XYZ in s pomočjo iteratorja naredi W
+// Napišite funkcijo, ki sprejme vektor XYZ in s pomočjo iteratorja naredi W:
 // števil in izpiše vsako v svojo vrstico
 // nizov in izpiše njihove dolžine
 // nizov in vrne vsoto njihovih dolžin
@@ -21,6 +66,12 @@
 // vektor Option<T> in izpiše vse T-je
 // vektor Option<T> in vrne število Some-ov
 // odfiltrira števila deljena s 3
+
+fn iter_stevila (v : Vec<i64>) {
+    v.iter().map(|n| println!("{}", n));
+}
+
+
 
 // Popravite zaporedja iz prejšnjih vaj, da bodo `iterabilna`
 
@@ -82,3 +133,8 @@ fn test_degenerate_cases() {
 
 
 */
+
+fn main(){
+    let double = |x| 2 * x;
+    println!("{}", apply_int(double, 5));
+}
